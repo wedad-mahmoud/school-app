@@ -43,21 +43,16 @@ interface SchoolState {
   languages: string[];
   religions: string[];
   
-  // Actions
   addStudent: (student: Omit<Student, 'id' | 'paidAmount'>) => void;
   updateStudent: (id: string, data: Partial<Student>) => void;
   deleteStudent: (id: string) => void;
-  
   addPayment: (payment: Omit<Payment, 'id'>) => boolean;
-  
   addTeacher: (teacher: Omit<Teacher, 'id'>) => void;
   updateTeacher: (id: string, data: Partial<Teacher>) => void;
   deleteTeacher: (id: string) => void;
-  
   addClass: (cls: Omit<SchoolClass, 'id'>) => void;
   updateClass: (id: string, data: Partial<SchoolClass>, updateStudents: boolean) => void;
   deleteClass: (id: string) => void;
-  
   addSettingItem: (type: 'sections' | 'languages' | 'religions', item: string) => void;
   deleteSettingItem: (type: 'sections' | 'languages' | 'religions', item: string) => void;
 }
@@ -92,7 +87,6 @@ export const useSchoolStore = create<SchoolState>()(
       addPayment: (data) => {
         const student = get().students.find(s => s.id === data.studentId);
         if (!student) return false;
-        
         const remaining = student.totalFee - student.paidAmount;
         if (data.amount > remaining) return false;
 
@@ -142,6 +136,6 @@ export const useSchoolStore = create<SchoolState>()(
         [type]: state[type].filter(i => i !== item)
       })),
     }),
-    { name: 'school-system-storage' }
+    { name: 'school-system-v1' }
   )
 );
